@@ -1,6 +1,6 @@
 # Git命令个人学习与总结
 
-### *一般推荐安装Git后,在git-bash中输入git命令:*
+### *一般推荐安装Git后,在git-bash中使用git命令:*
 
 
 
@@ -8,25 +8,27 @@
 
   ```
   git init
+  注意：可以解决将.git误删，重新生成.git目录
   ```
 
-  
+- 关联本地与远程分支
+
+```
+git pull origin 分支名 --allow-unrelated-histories
+```
+
+- 创建分支
+
+  ```
+  git branch 分支名
+  注意：要commit之后才能创建分支，否则报错“Not a valid object name:master”
+  ```
 
 - ##### 切换到要提交的分支
 
 ```
 git checkout 分支名
 ```
-
-
-
-- ##### 关联本地与远程分支
-
-```
-git pull origin 分支名 --allow-unrelated-histories
-```
-
-
 
 - ##### 首先进行git add 添加文件
 
