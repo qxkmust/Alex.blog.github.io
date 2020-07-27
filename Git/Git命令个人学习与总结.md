@@ -2,7 +2,13 @@
 
 ### *一般推荐安装Git后,在git-bash中使用git命令:*
 
+- 关联github
 
+  ```
+  登录github：
+  git config --global user.email "1841359714@qq.com"
+  git config --global user.name "qxkmust"
+  ```
 
 - ##### 初始化本地仓库
 
@@ -11,7 +17,7 @@
   注意：可以解决将.git误删，重新生成.git目录
   ```
 
-- 关联本地与远程分支
+- 拉取远程分支
 
 ```
 git pull origin 分支名 --allow-unrelated-histories
@@ -104,4 +110,50 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.**
   5、删除临时分支 git branch -d temp
   ```
 
+
+- git拉取远程分支的两种方式
+
+  ```
+  1、当本地有其他分支的代码仓库时
   
+  通过下述命令查看所有的远程分支：
+  git branch -r
+  下面有2种方法来拉取远程分支代码：
+  (1).需要本地分支和远程分支建立映射关系
+  执行如下命令：
+  git checkout -b 本地分支xxx  origin/远程分支xxx
+  使用这种方式会在本地仓库新建本地分支xxx，并自动切换到新建的本地分支xxx，当然了远程分支xxx的代码也拉取到了本地分支xxx中。采用这种方法建立的本地分支会和远程分支建立映射关系。
+  (2).不需要本地分支和远程分支建立映射关系
+  执行如下命令：
+  git fetch origin 远程分支xxx:本地分支xxx
+  使用这种方式会在本地仓库新建本地分支xxx，但是并不会自动切换到新建的本地分支xxx，需要手动checkout，当然了远程分支xxx的代码也拉取到了本地分支xxx中。采用这种方法建立的本地分支不会和远程分支建立映射关系。
+  
+  2、当本地没有其他分支的代码仓库时
+  
+  执行如下命令：
+  git clone -b 分支名 仓库地址
+  执行上述命令后就将远程分支拉取到了本地。
+  ```
+
+## 常见问题
+
+```
+问题1：
+Failed to connect to github.com port 443: Timed out？
+分析：可能是在hosts配置了域名映射失效了
+解决办法：如下
+```
+
+![1595863069109](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1595863069109.png)
+
+```
+问题2：
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/qxkmust/Alex.blog.github.io.git/'
+分析：可能更改了github的认证信息，需要在git中重新认证
+解决：
+	在git bash中使用命令：
+	git config --global user.email "github邮箱"
+	git config --global user.name "github用户名"
+```
+
