@@ -1050,6 +1050,35 @@ YARN-HA高可用与HDFS-HA类似，同样依赖zookeeper
         		②如果hadoop02上的rm1是Active状态，手动杀掉rm1，登录hadoop03:8088,如果正常登录，说明rm2已经切换为Active状态
 ```
 
+### DN空间满了怎么办
+
+```
+如果DN空间满了，会导致hdfs永久进入安全模式，无法进行写操作，解决办法：
+方法一：手动清除垃圾站（hdfs://user/root/.Trash）的数据
+	①强制hdfs退出安全模式：
+		hdfs dfsadmin -safemode leave
+	②手动清除Trash
+		hadoop fs -expunge
+方法二：自动清除垃圾站（修改core-site.xml）
+	①fs.trash.interval，默认1440分钟（1天）清理一次Trash
+	②fs.trash.max.percentused，当已使用空间率大于该值, 执行回收以释放空间. 默认为0.8f
+方法三：服务器动态扩容增加硬盘，生产中都会配置DataNode多目录
+```
+
+### 元数据丢失怎么办
+
+```
+如果误删了hdfs元素的目录，导致hdfs的块丢失，进一步导致NN进入安全模式，不能进行写操作，解决办法：
+步骤一：退出安全模式
+	hdfs dfsadmin -safemode leave
+步骤二：检查hdfs丢失的块
+	hdfs fsck /
+	注意：可查看丢失的块的个数，以及丢失的数据大小
+步骤三：删除丢失的块
+	如果块丢失了，一般重启hdfs服务，2NN会自动帮助NN恢复，如果恢复不了，就只能删除丢失的块
+	hdfs fsck -delete
+```
+
 ### 支持LZO和Snappy压缩
 
 ```
@@ -1075,7 +1104,7 @@ hadoop默认支持GzipCodec、 DefaultCodec、BZip2Codec，需要自己编译Sna
 <!-- 指定Snappy的类-->
 <property>
   <name>io.compression.codec.snappy.class</name>
-  <value>com.hadoop.compression.lzo.LzopCodec</value>
+  <value>org.apache.hadoop.io.compress.SnappyCodec</value>
 </property>
 ```
 

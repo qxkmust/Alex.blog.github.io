@@ -68,7 +68,7 @@
 
 | 发送消息           | kafka-console-producer.sh --broker-list hadoop02:9092 --topic mytopic<br/>语法：kafka-console-producer.sh --broker-list 【当前kafka集群地址】 --topic 【向哪个主题发】 |
 | ------------------ | ------------------------------------------------------------ |
-| 消费消息           | kafka-console-consumer.sh --zookeeper hadoop02:2181 --topic mytopic --from-beginning<br/>语法：kafka-console-consumer.sh --bootstrap-server 【当前kafka集群地址】 --topic 【从哪个主题获取消息】 --from-beginning，表示接受所有的消息（包括离线和实时的消息） |
+| 消费消息           | kafka-console-consumer.sh --bootstrap-server hadoop02:9092 --topic mytopic --from-beginning<br/>语法：kafka-console-consumer.sh --bootstrap-server 【当前kafka集群地址】 --topic 【从哪个主题获取消息】 --from-beginning，表示接受所有的消息（包括离线和实时的消息） |
 | 以消费者组消费消息 | 步骤一：在主机hadoop02、hadoop03中，配置/opt/kafka_2.11-0.11.0.0/config/consumer.properties中修改group.id=mygroup_alex<br/>步骤二：分别在三台主机开启消费者<br/>kafka-console-consumer.sh --bootstrap-server hadoop02:9092 --topic mytopic --consumer.config consumer.properties<br/>验证：在主机hadoop04上开启消息生产者，发现hadoop02、hadoop03交替获得消息<br/> |
 
 ### Kafka的生产者的消息发送确认机制

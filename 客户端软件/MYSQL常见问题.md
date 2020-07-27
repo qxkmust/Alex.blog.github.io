@@ -188,11 +188,11 @@
 - 彻底解决中文乱码
 
   ```
-  init_connect='SET collation_connection = utf8_unicode_ci' 
+  init_connect='SET collation_connection = utf8_unicode_ci'
   
   init_connect='SET NAMES utf8'
   
-  character-set-server=utf8  
+  character-set-server=utf8
   
   collation-server=utf8_unicode_ci
   

@@ -164,7 +164,7 @@ atlas.kafka.enable.auto.commit=true
                      <name>hive.exec.post.hooks</name>
                      <value>org.apache.atlas.hive.hook.HiveHook</value>
                 </property>
-            ②编辑/opt/hive-1.2.1/conf/hive-env.sh,添加：
+            ②添加hivehook的依赖包到hive的环境变量,编辑/opt/hive-1.2.1/conf/hive-env.sh,添加：
             	#在 tez 引擎依赖的 jar 包后面追加 hive 插件相关 jar 包 export HIVE_AUX_JARS_PATH=/opt/module/hadoop-2.7.2/share/hadoop/common/hadoop-lzo-0.4.20.jar$TEZ_JARS,/opt/atlas-0.8.4/hook/hive/atlas-plugin-classloader-0.8.4.jar,/opt/atlas-0.8.4/hook/hive/hive-bridge-shim-0.8.4.jar
 步骤四：其他配置
 	①修改/opt/atlas-0.8.4/conf/atlas-application.properties:
@@ -213,3 +213,25 @@ atlas.kafka.enable.auto.commit=true
 ### 架构
 
 ![1593131028403](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1593131028403.png)
+
+### 案例
+
+```
+需求：
+	atlas连接hive，并获取gmall_user_action的元数据的血缘关系
+实现：
+	①启动atlas
+		/opt/atlas-0.8.4/bin/atlas_start.py
+	②访问atlas监控页面http://hadoop02:21000
+		①选择监控的数据源，常用的是hive_db和hive_table
+		②单击search，显示hive的元数据
+		此时由于数据没有流动，所以无法看到元数据的血缘
+	③模拟数据流动(atlas通过hook拉取hive中的元数据)
+		①启动azkaban，调度执行用户行为的数仓脚本
+			azkaban-executor-start.sh，启动Executor服务器
+			azkaban-web-start.sh，启动Web服务器
+		②新建工程，导入gmall_user_action_jobs.zip
+		③等待任务执行完成
+	④选择一张表，比如ods_start_log,查看血缘关系Lineage
+```
+

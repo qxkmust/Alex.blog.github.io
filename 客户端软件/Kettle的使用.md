@@ -3,10 +3,10 @@
 ### 简介
 
 ```
-Kettle是一款国外开源的ETL工具，纯java编写，可以在Windows、Linux、Unix上运行，功能包括：数据抽取、质量检测、数据清洗、数据转换、数据过滤。生产中常在开发环境使用，也就是Windows环境
+Kettle是一款国外开源的ETL工具，纯java编写，可以在Windows、Linux、Unix上运行，功能包括：数据抽取、质量检测、数据清洗、数据转换、数据过滤。
 ```
 
-### 安装
+### windows下安装
 
 ```
 步骤一：
@@ -25,6 +25,27 @@ Kettle是一款国外开源的ETL工具，纯java编写，可以在Windows、Lin
     覆盖D://kettle_8.2-data_integration\plugins\pentaho-big-data-plugin\hadoop-configurations\hdp26目录下的同名文件
 步骤四：运行
 	双击Spoon.bat即可运行
+```
+
+### linux下安装
+
+```
+步骤一：
+	从官网https://sourceforge.net/projects/pentaho/files/Data%20Integration/下载相应版本的zip包，本机使用的pdi-ce-8.2.0.0-342.zip
+步骤二：安装
+	直接将zip文件解压到/opt/kettle_8.2-data_integration
+步骤三：配置
+	①修改解压目录下的/opt/kettle_8.2-data_integration/plugins/pentaho-big-data-plugin下的plugin.properties，设置active.hadoop.configuration=hdp26
+	②从集群中拷贝：
+    	hdfs-site.xml
+    	core-site.xml
+    	mapred-site.xml
+    	yarn-site.xml
+    	hbase-site.xml
+    	hive-site.xml
+    覆盖/opt/kettle_8.2-data_integration/plugins/pentaho-big-data-plugin/hadoop-configurations/hdp26目录下的同名文件
+步骤四：运行
+	通过.sh脚本运行指定的job或者transform
 ```
 
 ### 组件
@@ -59,8 +80,9 @@ KITCHEN 允许你批量使用由Chef设计的任务 (例如使用一个时间调
 	②在window下，启动Sqoop.bat程序：
 		①创建“表输入”，配置数据库连接，指定输入的表，指定sql语句“select * from tb_stu”
 		②"插入/更新"，配置数据库连接，指定输出的表
-	③先保存转换到D:\Kettle_8_2_data_integration\MyWorkplace\mysql_to_mysql.ktr,
-	然后点击“Run”运行转换
+	③先保存转换到D:\Kettle_8_2_data_integration\MyWorkplace\mysql_to_mysql_ktr.ktr,
+	④点击“Run”运行转换，也可以调用Pan.bat脚本命令：
+		Pan.bat /file ./MyWorkplace/mysql_to_mysql_ktr.ktr
 ```
 
 #### 案例二：mysql数据同步
@@ -68,7 +90,7 @@ KITCHEN 允许你批量使用由Chef设计的任务 (例如使用一个时间调
 ```
 需求：
 	①使用“作业”方式，将192.168.8.105:3306/main_db下的tb_stu表数据导入到192.168.8.105:3306/kettle下的tb_stu
-	②调用sql删除tb_stu中id最大的记录
+	②调用sql删除kettle.tb_stu中id最大的记录
 解决：
 	①在192.168.8.105创建kettle数据库，在kettle下创建tb_stu表：
 		create database kettle default character set utf8 collate utf8_general_ci;
@@ -78,7 +100,8 @@ KITCHEN 允许你批量使用由Chef设计的任务 (例如使用一个时间调
 		②创建“转换”，选取mysql_to_mysql_ktr.ktr作为转换
 		③创建"Sql"，编写sql：delete from tb_stu where id = 4
 	③先保存转换到D:\Kettle_8_2_data_integration\MyWorkplace\mysql_to_mysql_kjb.kjb,
-	然后点击“Run”运行转换
+	④点击“Run”运行转换，也可以调用Pan.bat脚本命令：
+		Kitchen.bat /file ./MyWorkplace/mysql_to_mysql_kjb.kjb
 ```
 
 #### 案例三：hive到hdfs
@@ -120,7 +143,7 @@ sqoop只是完成hdfs到关系型数据库 或者 关系型数据库到hdfs的�
 | ------------ | ----------------------- | -------------------------------- |
 | 数据抽取     | 任意输入和输出          | 关系数据库 与 非关系数据导入导出 |
 | 数据过滤     | 界面配置（生成sql）实现 | 手动sql实现                      |
-| 数据质量检测 | 支持                    | 不支持                           |
+| 数据质量检测 | 界面配置（生成sql）实现 | 手动sql实现                      |
 | 图形界面     | Spoon                   | 无                               |
 | 中间数据转换 | 支持                    | 不支持                           |
 | ETL          | 完全实现                | 部分实现                         |

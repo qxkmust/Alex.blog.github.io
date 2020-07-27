@@ -195,3 +195,28 @@ azkaban一个批量工作流任务调度器，用于在一个工作流内以一�
 ⑤执行该任务
 ```
 
+### JOB类型
+
+```
+1.command：Linux shell命令行任务
+
+2.gobblin：通用数据采集工具
+
+3.hadoopJava：运行hadoopMR任务
+
+4.java：原生java任务
+
+5.hive：支持执行hiveSQL
+
+6.pig：pig脚本任务
+
+7.spark：spark任务
+
+8.hdfsToTeradata：把数据从hdfs导入Teradata
+
+9.teradataToHdfs：把数据从Teradata导入hdfs
+```
+
+### Azkaban对比Oozie
+
+![1594205347834](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1594205347834.png)

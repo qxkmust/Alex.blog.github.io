@@ -555,7 +555,7 @@ Tez是Apache最新的支持DAG作业的开源计算框架，它可以将多个�
 ### 中文乱码问题
 
 ```
-步骤一：修改mysql编码
+步骤一：修改mysql编码，编辑my.cnf
 	init_connect='SET collation_connection = utf8_unicode_ci' 
 
     init_connect='SET NAMES utf8'

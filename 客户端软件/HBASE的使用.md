@@ -104,6 +104,20 @@
 
 ![Hbase架构](D:\Git\MyRepository\Alex.blog.github.io\Images\Hbase架构.png)
 
+### Hbase缓存机制
+
+```
+HBase在实现中提供了两种缓存结构：MemStore和BlockCache。
+MemStore
+1、其中MemStore称为写缓存
+2、HBase执行写操作首先会将数据写入MemStore，并顺序写入HLog，这种设计可以极大地提升HBase的写性能。
+3、MemStore对于读性能也至关重要，假如没有MemStore，读取刚写入的数据就需要从文件中通过IO查找，这种代价显然是昂贵的！
+
+BlockCache
+1、BlockCache称为读缓存
+2、HBase会将一次文件查找的Block块缓存到Cache中，以便后续同一请求或者邻近数据查找请求，可以直接从内存中获取，避免昂贵的IO操作。
+```
+
 ### Hbase Shell基本语法
 
 **一：DDL操作：**
