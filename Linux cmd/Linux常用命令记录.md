@@ -146,7 +146,7 @@
 
 ### 用户
 
-- 新增用户 adduser 用户名
+- 新增用户 useradd 用户名
 - 新增密码 passwd 用户名
 - 修改用户权限
   -  usermod -g root alex，将普通用户alex添加到root组
