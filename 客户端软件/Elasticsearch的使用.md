@@ -72,6 +72,12 @@ Elasticsearch是一个基于Lucene的搜索服务器。它提供了一个分布�
         discovery.zen.ping.unicast.hosts: ["hadoop02","hadoop03","hadoop04"]
         #防止脑裂，设置集群中候选主节点的个数【(集群节点个数/2)+1】，有过半数的候选节点就可以保证选举出唯一的主节点
         discovery.zen.minimum_master_nodes: 2
+        
+        注意：在ES7版本替换了以下两个参数：
+        #集群初始化列表
+        discovery.seed_hosts: ["hadoop02","hadoop03","hadoop04"]
+        #集群初始化时指定主节点
+		cluster.initial_master_nodes: ["node-1"]
     ③修改最大可创建文件数(启动es最低要求65536)，编辑/etc/security/limits.conf
     	末尾处增加：
     		*       soft    nofile  65536
@@ -81,11 +87,11 @@ Elasticsearch是一个基于Lucene的搜索服务器。它提供了一个分布�
     ④修改最大虚拟内存（启动es最低要求262144），编辑/etc/sysctl.conf
     	①修改：vm.max_map_count=262144
     	②立即生效，sysctl -p
-    ⑤修改jvm参数
+    ⑤修改/opt/elasticsearch-5.6.2/config/jvm.option参数
         修改:
             -Xms256m
             -Xmx256m
-        默认大小是2g，生产中可增加-Xms和-Xmx的值
+        默认大小是2g，生产中可增加-Xms和-Xmx的值，但是Xms和Xmx必须设置相同，否则启动报错
 步骤四：分发到hadoop03、hadoop04
 	xsync /opt/elasticsearch-5.6.2
 	xsync /etc/sysctl.conf
